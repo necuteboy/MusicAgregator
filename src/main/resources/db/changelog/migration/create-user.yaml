@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: v1-create-user-jn
+      author: Sergey Andreychikov
+      changes:
+        - createTable:
+            tableName: user_jn
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: role
+                  type: varchar(255)
+              - column:
+                  name: password
+                  type: varchar(255)
+              - column:
+                  name: gender
+                  type: varchar(255)
+              - column:
+                  name: is_banned
+                  type: boolean
+              - column:
+                  name: email
+                  type: varchar(255)
+        - sql:
+            sql: |
+              alter table user_jn
+                  add constraint name_length_check check ( length(name) > 0 );
