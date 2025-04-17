@@ -19,6 +19,6 @@ class MusicController(
     fun saveMusic(musicDto: MusicDto) = musicService.saveMusic(musicDto)
 
     @DeleteMapping(value = ["delete-music"])
-    fun saveMusic(id: Long) = musicService.deleteMusic(id)
+    fun deleteMusic(id: Long) = musicService.deleteMusic(id)
 
 }
