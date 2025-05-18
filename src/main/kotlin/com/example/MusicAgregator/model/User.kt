@@ -20,6 +20,7 @@ data class User(
     var isBanned: Boolean? = false,
     @Column(name = "email")
     val email: String,
-    @ManyToMany
+
+    @OneToMany(mappedBy = "users", cascade = [CascadeType.ALL], orphanRemoval = true)
     val musics: List<MusicModel>? = emptyList()
 )

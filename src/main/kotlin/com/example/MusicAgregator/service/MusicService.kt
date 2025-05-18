@@ -16,4 +16,6 @@ class MusicService(
 
     fun deleteMusic(id: Long) = musicRepository.deleteById(id)
 
+    fun getAllMusic(): List<MusicDto> = musicRepository.findAll().map { musicMapper.mapToMusicDto(it) }
+
 }

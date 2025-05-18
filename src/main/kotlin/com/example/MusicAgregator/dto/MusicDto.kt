@@ -1,12 +1,14 @@
 package com.example.MusicAgregator.dto
 
-import com.example.MusicAgregator.model.User
 
 data class MusicDto(
-    val id: Long,
+    val id: Long? = null,
+
     val name: String,
+
     val author: String,
+
     val genre: String,
-    val musicFileExtract: Byte,
-    val users: List<User>
+
+    val user: Long
 )

@@ -2,23 +2,46 @@ package com.example.MusicAgregator.controller
 
 import com.example.MusicAgregator.dto.MusicDto
 import com.example.MusicAgregator.service.MusicService
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RestController
+import com.example.MusicAgregator.storage.StorageService
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
-@RestController(value = "/music")
+@RestController
+@RequestMapping("/music")
 class MusicController(
-    val musicService: MusicService
+    val musicService: MusicService,
+    val storageService: StorageService
 ) {
-    @GetMapping(value = ["/get-music"])
-    fun getMusic(id: Long): MusicDto = musicService.getMusicById(id)
+    @GetMapping("/get-music")
+    fun getMusic(@RequestParam id: Long): MusicDto = musicService.getMusicById(id)
 
-    @PostMapping(value = ["save-music"])
+    @PostMapping("/save-music")
     fun saveMusic(musicDto: MusicDto) = musicService.saveMusic(musicDto)
 
-    @DeleteMapping(value = ["delete-music"])
+    @DeleteMapping("/delete-music")
     fun deleteMusic(id: Long) = musicService.deleteMusic(id)
+
+    @PostMapping("/upload-music")
+    fun uploadMusic(@RequestBody file: MultipartFile) {
+        storageService.uploadMp3File(file)
+    }
+
+    @GetMapping("/download-music")
+    fun downloadMusic(@RequestParam name: String): ResponseEntity<ByteArray> {
+        val fileContent = storageService.getFile(name)
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=test.mp3")
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(fileContent)
+    }
+
+    @GetMapping("/get-all")
+    fun getAllMusic(): ResponseEntity<List<MusicDto>> {
+        val response = musicService.getAllMusic()
+        return ResponseEntity.ok(response)
+    }
 
 }

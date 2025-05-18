@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   postgres:
     image: 'postgres:15-alpine'
@@ -6,4 +8,19 @@ services:
       - 'POSTGRES_PASSWORD=secret'
       - 'POSTGRES_USER=myuser'
     ports:
-      - 5432:5432
+      - "5432:5432"
+
+  minio:
+    image: 'bitnami/minio:latest'
+    container_name: 'minio'
+    environment:
+      - 'MINIO_ROOT_USER=123'
+      - 'MINIO_ROOT_PASSWORD=123456789'
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - s3_vol:/data
+
+volumes:
+  s3_vol:
